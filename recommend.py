@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import google.generativeai as genai
 import urllib.request
+from urllib.parse import urlencode
 
 load_dotenv()
 client = OpenAI()
