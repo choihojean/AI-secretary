@@ -55,7 +55,7 @@ def Process(prompt, history, image) -> str:
     
     return completion.choices[0].message.content
 
-# Global variables to store generated contents
+#생성된 컨텐츠 저장을 위한 변수
 map_html = ""
 generated_image = None
 video_html = ""
@@ -94,7 +94,7 @@ def GetImage(chatbot):
         
         # text 값이 없을 때의 예외 처리
         if text is None:
-            return "./loading.gif"
+            return "./mapfolding.webp"
         
         location = ''.join(map(str, list(text.split('.', 1)[0])[4:-3]))
         
@@ -159,18 +159,22 @@ with gr.Blocks(title="여행 챗봇") as demo:
                 clear_btn=None)
             chat.chatbot.height = 400
             chat.chatbot.label = "여행 챗봇"
+
+            # 새로고침 버튼 추가
+            refresh_button = gr.Button("새 여행지 질문하기")
+            refresh_button.click(fn=None, js="window.location.reload()")
             
         # 우측 UI 구성
         with gr.Column():
-            # HTML(지도)
+            # 지도
             html = gr.HTML(label="지도")
             chat.chatbot.change(fn=Map, inputs=chat.chatbot, outputs=html)
             
-            # Image
+            # 이미지
             image = gr.Image(value=None, height=output_image_size, width=output_image_size, label="여행지 랜드마크")
             chat.chatbot.change(fn=GetImage, inputs=chat.chatbot, outputs=image)
             
-            # Video
+            # 비디오
             video = gr.HTML(label="여행지 소개 영상")
             chat.chatbot.change(fn=GetVideo, inputs=chat.chatbot, outputs=video)
 
